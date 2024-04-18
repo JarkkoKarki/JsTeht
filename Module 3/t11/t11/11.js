@@ -97,30 +97,9 @@ const picArray = [
 // add your code here
 document.addEventListener('DOMContentLoaded', function() {
     const sectionElement = document.getElementById('pictures');
-    const mainElement = document.querySelector('main');
-
-    function createDialogElements() {
-        picArray.forEach((item, index) => {
-            const dialogElement = document.createElement('dialog');
-
-            const imageElement = document.createElement('img');
-            imageElement.src = '';
-            imageElement.alt = item.title; // Alt text for the image
-
-            const closeButton = document.createElement('button');
-            closeButton.textContent = 'Close';
-            closeButton.classList.add('close');
-
-            dialogElement.appendChild(imageElement);
-            dialogElement.appendChild(closeButton);
-
-            mainElement.appendChild(dialogElement);
-        });
-    }
-
-    createDialogElements();
-
-    const modals = document.querySelectorAll('dialog');
+    const modal = document.querySelector('dialog');
+    const modalImage = modal.querySelector('img');
+    const closeButton = modal.querySelector('span');
 
     picArray.forEach((item, index) => {
         const articleElement = document.createElement('article');
@@ -149,31 +128,15 @@ document.addEventListener('DOMContentLoaded', function() {
         articleElement.appendChild(descriptionElement);
 
         articleElement.addEventListener('click', function() {
-            const modal = modals[index];
-            if (modal) {
-                const modalImageElement = modal.querySelector('img');
-                if (modalImageElement) {
-                    modalImageElement.src = item.image.large;
-                    modal.showModal();
-                } else {
-                    console.error('Image element not found in modal');
-                }
-            } else {
-                console.error('Modal not found for index:', index);
-            }
+            modalImage.src = item.image.large;
+            modalImage.alt = item.title;
+            modal.showModal();
         });
 
         sectionElement.appendChild(articleElement);
     });
 
-    modals.forEach((modal, index) => {
-        const closeButton = modal.querySelector('.close');
-        if (closeButton) {
-            closeButton.addEventListener('click', function() {
-                modal.close();
-            });
-        } else {
-            console.error(`Close button not found for modal at index ${index}`);
-        }
+    closeButton.addEventListener('click', function() {
+        modal.close();
     });
 });
